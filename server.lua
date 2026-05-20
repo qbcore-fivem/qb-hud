@@ -1,14 +1,14 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject({ 'Functions', 'Commands' })
 local ResetStress = false
 
 QBCore.Commands.Add('cash', 'Check Cash Balance', {}, false, function(source, _)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local cashamount = Player.PlayerData.money.cash
     TriggerClientEvent('hud:client:ShowAccounts', source, 'cash', cashamount)
 end)
 
 QBCore.Commands.Add('bank', 'Check Bank Balance', {}, false, function(source, _)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = exports['qb-core']:GetPlayer(source)
     local bankamount = Player.PlayerData.money.bank
     TriggerClientEvent('hud:client:ShowAccounts', source, 'bank', bankamount)
 end)
@@ -20,7 +20,7 @@ end, 'admin')
 RegisterNetEvent('hud:server:GainStress', function(amount)
     if Config.DisableStress then return end
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     local Job = Player.PlayerData.job.name
     local JobType = Player.PlayerData.job.type
     local newStress
@@ -37,7 +37,7 @@ RegisterNetEvent('hud:server:GainStress', function(amount)
     if newStress > 100 then
         newStress = 100
     end
-    Player.Functions.SetMetaData('stress', newStress)
+    Player.SetMetaData('stress', newStress)
     TriggerClientEvent('hud:client:UpdateStress', src, newStress)
     TriggerClientEvent('QBCore:Notify', src, Lang:t('notify.stress_gain'), 'error', 1500)
 end)
@@ -45,7 +45,7 @@ end)
 RegisterNetEvent('hud:server:RelieveStress', function(amount)
     if Config.DisableStress then return end
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local Player = exports['qb-core']:GetPlayer(src)
     local newStress
     if not Player then return end
     if not ResetStress then
@@ -60,7 +60,7 @@ RegisterNetEvent('hud:server:RelieveStress', function(amount)
     if newStress > 100 then
         newStress = 100
     end
-    Player.Functions.SetMetaData('stress', newStress)
+    Player.SetMetaData('stress', newStress)
     TriggerClientEvent('hud:client:UpdateStress', src, newStress)
     TriggerClientEvent('QBCore:Notify', src, Lang:t('notify.stress_removed'))
 end)

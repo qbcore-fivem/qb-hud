@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject({ 'Functions' })
 local PlayerData = QBCore.Functions.GetPlayerData()
 local config = Config
 local speedMultiplier = config.UseMPH and 2.23694 or 3.6
@@ -103,7 +103,8 @@ RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
     PlayerData = {}
 end)
 
-RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
+RegisterNetEvent('QBCore:Client:OnPlayerUpdated', function(key, val)
+    if key ~= 'all' then return end
     PlayerData = val
 end)
 
@@ -862,6 +863,7 @@ end)
 -- Money HUD
 
 local Round = math.floor
+local function RoundNearest(value) return math.floor(value + 0.5) end
 
 RegisterNetEvent('hud:client:ShowAccounts', function(type, amount)
     if type == 'cash' then
@@ -1103,9 +1105,9 @@ CreateThread(function()
         local player = PlayerPedId()
         local camRot = GetGameplayCamRot(0)
         if Menu.isCompassFollowChecked then
-            heading = tostring(QBCore.Shared.Round(360.0 - ((camRot.z + 360.0) % 360.0)))
+            heading = tostring(RoundNearest(360.0 - ((camRot.z + 360.0) % 360.0)))
         else
-            heading = tostring(QBCore.Shared.Round(360.0 - GetEntityHeading(player)))
+            heading = tostring(RoundNearest(360.0 - GetEntityHeading(player)))
         end
         if heading == '360' then heading = '0' end
         if heading ~= lastHeading then
