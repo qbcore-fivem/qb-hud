@@ -1034,7 +1034,12 @@ CreateThread(function()
             Wait(1)
         end
     end
+
     while true do
+        BeginScaleformMovieMethod(minimap, 'SETUP_HEALTH_ARMOUR')
+        ScaleformMovieMethodAddParamInt(3)
+        EndScaleformMovieMethod()
+
         if w > 0 then
             BlackBars()
             DisplayRadar(0)
