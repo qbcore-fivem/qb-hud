@@ -45,6 +45,9 @@ end)
 RegisterNetEvent('hud:server:RelieveStress', function(amount)
     if Config.DisableStress then return end
     local src = source
+    if type(amount) ~= 'number' then return end
+    amount = math.floor(amount)
+    if amount <= 0 or amount > 100 then return end
     local Player = exports['qb-core']:GetPlayer(src)
     local newStress
     if not Player then return end
